@@ -7,20 +7,20 @@ total_operaciones = 0      # Contador: número de ventas realizadas
 total_entradas = 0         # Acumulador: entradas vendidas en total
 total_recaudado = 0.0      # Acumulador: dinero recaudado en total
 
-# Ampliación 1: contador de entradas vendidas de cada tipo
+# Ampliación: contador de entradas vendidas de cada tipo
 entradas_infantiles = 0
 entradas_menores = 0
 entradas_generales = 0
 entradas_senior = 0
 
-# Constantes de configuración (evitan "números mágicos" en el código)
+# Constantes globales (evitan números mágicos en el código)
 PRECIO_INFANTIL = 0.0
 PRECIO_MENORES = 5.0
 PRECIO_GENERAL = 9.0
 PRECIO_SENIOR = 6.0
-MAXIMO_ENTRADAS = 10           # Ampliación 2: límite por operación
-ENTRADAS_PARA_DESCUENTO = 5    # Ampliación 2: mínimo para tener descuento
-PORCENTAJE_DESCUENTO = 0.10    # Ampliación 2: 10 %
+MAXIMO_ENTRADAS = 10           # Ampliación: límite por operación
+ENTRADAS_PARA_DESCUENTO = 5    # Ampliación: mínimo para tener descuento
+PORCENTAJE_DESCUENTO = 0.10    # Ampliación: 10 %
 
 #Menú principal del programa, donde el usuario puede elegir entre vender entradas, consultar el resumen de ventas o salir del programa.
 while True:
@@ -40,7 +40,7 @@ while True:
             print("Error: el nombre no puede estar vacío.")
             continue  # Vuelve al menú
 
-        # Control de excepciones: si el texto no es un entero, int() lanza ValueError
+        # Control de excepciones: si el texto no es un entero int() lanza ValueError
         try:
             edad = int(input("Edad del cliente: "))
             numero_entradas = int(input("Número de entradas: "))
@@ -60,7 +60,6 @@ while True:
             continue
 
         # Selección del tipo de entrada y del precio según la edad
-        # (condiciones compuestas con "and")
         if edad < 5:
             tipo_entrada = "Infantil gratuita"
             precio_entrada = PRECIO_INFANTIL
@@ -110,7 +109,7 @@ while True:
             entradas_senior += numero_entradas
 
     elif opcion == "2":
-        # ===== OPCIÓN 2: RESUMEN DE VENTAS =====
+        #OPCIÓN 2: RESUMEN DE VENTAS
         print("\n========== RESUMEN DE VENTAS ==========")
         print(f"Operaciones realizadas: {total_operaciones}")
         print(f"Entradas vendidas: {total_entradas}")
@@ -132,11 +131,11 @@ while True:
         print("=======================================")
 
     elif opcion == "3":
-        # ===== OPCIÓN 3: SALIR =====
+        # OPCIÓN 3: SALIR
         print("Programa finalizado.")
         print("Gracias por utilizar la taquilla.")
         break  # Termina el bucle while y el programa
 
     else:
-        # ===== OPCIÓN NO VÁLIDA =====
+        # OPCIÓN NO VÁLIDA
         print("Opción no válida. Selecciona una opción del 1 al 3.")

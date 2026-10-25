@@ -29,7 +29,8 @@ PRECIO_SENIOR = 6.0            # 65 años o más
 MAXIMO_ENTRADAS = 10           # AMPLIACIÓN: máximo de entradas por operación
 ENTRADAS_PARA_DESCUENTO = 5    # AMPLIACIÓN: entradas mínimas para el descuento de grupo
 PORCENTAJE_DESCUENTO = 0.10    # AMPLIACIÓN: descuento de grupo del 10 %
-PORCENTAJE_ESTUDIANTE = 0.20   # AMPLIACIÓN: descuento del 20 % con carnet de estudiante
+PORCENTAJE_ESTUDIANTE = 0.20   # AMPLIACIÓN: además de preguntar si el cliente tiene carnet de estudiante, 
+# aplicamos un descuento del 20 % para que sea más realista
 
 
 # FUNCIONES AUXILIARES

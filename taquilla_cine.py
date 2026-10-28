@@ -1,27 +1,20 @@
 # Proyecto: Taquilla de cine
 # Autores: Eva Pozo y Marcos Fernández
-#
-# Estructuras utilizadas:
-#   - Repetición:  while True (mantiene activo el menú)
-#   - Selección:   if / elif / else (menú, tipo de entrada, descuentos)
-#   - Salto:       break (salir) y continue (volver al menú ante un error)
-#   - Excepciones: try-except ValueError y raise ValueError
 
-# VARIABLES GLOBALES: contadores y acumuladores del resumen
 
-total_operaciones = 0      # Contador: número de ventas realizadas (suma 1 por venta)
-total_entradas = 0         # Acumulador: entradas vendidas en total
-total_recaudado = 0.0      # Acumulador: dinero recaudado en total
+# VARIABLES GLOBALES: contadores (total_operaciones) y acumuladores
+total_operaciones = 0      
+total_entradas = 0        
+total_recaudado = 0.0      
 
 # AMPLIACIÓN: contabilizar las entradas vendidas de cada tipo.
-# Un contador por tipo; se muestran en el resumen de ventas (opción 2).
+# Contadores por tipo para mostrar en el resumen de ventas (opción 2).
 entradas_infantiles = 0
 entradas_menores = 0
 entradas_generales = 0
 entradas_senior = 0
 
-# CONSTANTES: evitan "números mágicos" en el código
-# y permiten cambiar un precio o un límite en un único sitio.
+# CONSTANTES:
 PRECIO_INFANTIL = 0.0          # Menores de 5 años
 PRECIO_MENORES = 5.0           # De 5 a 17 años
 PRECIO_GENERAL = 9.0           # De 18 a 64 años
@@ -77,18 +70,16 @@ while True:
         # OPCIÓN 1: VENDER ENTRADAS
     
         # NOMBRE DEL CLIENTE
-        # strip() elimina los espacios del principio y del final.
-        nombre_cliente = input("Nombre del cliente: ").strip()
+        
+        nombre_cliente = input("Nombre del cliente: ").strip()# strip() elimina los espacios 
 
-        # El nombre se valida justo al leerlo: si está vacío no tiene sentido
-        # pedir el resto de datos, así que se avisa y se vuelve al menú.
+        # El nombre se valida justo al leerlo: si está vacío se avisa y se vuelve al menú con continue.
         if nombre_cliente == "":
             print("Error: el nombre no puede estar vacío.")
-            continue  # Vuelve al menú sin pedir más datos
+            continue  
 
         # EDAD Y NÚMERO DE ENTRADAS
-        # input() devuelve texto; int() lo convierte a entero. Si el usuario
-        # escribe "veinte", "3.5" o nada, int() lanza un ValueError.
+        # Si el usuario introduce un valor no numérico, lanza ValueError
         try:
             edad = int(input("Edad del cliente: "))
             numero_entradas = int(input("Número de entradas: "))
@@ -97,9 +88,8 @@ while True:
             continue  # Vuelve al menú sin registrar la venta
 
         # VALIDACIÓN DE DATOS
-        # validar_datos() usa raise ValueError si la edad es negativa o el
-        # número de entradas no es válido. Se captura aquí para mostrar el
-        # mensaje y volver al menú.
+        # validar_datos() (función auxiliar)usa raise ValueError si la edad es negativa o el
+        # número de entradas no es válido. Se captura aquí para mostrar el mensaje y volver al menú.
         try:
             validar_datos(edad, numero_entradas)
         except ValueError as error:
@@ -107,9 +97,7 @@ while True:
             continue  # Vuelve al menú sin registrar la venta
 
         # TIPO DE ENTRADA Y PRECIO
-        # Estructura de selección if-elif-else. Los tramos intermedios usan
-        # condiciones compuestas con "and": la edad debe cumplir las dos
-        # comparaciones a la vez (por ejemplo, ser >= 5 Y ser <= 17).
+        # Estructura de selección if-elif-else. Usan condiciones compuestas con "and".
         if edad < 5:
             tipo_entrada = "Infantil gratuita"
             precio_entrada = PRECIO_INFANTIL
@@ -128,28 +116,22 @@ while True:
         tiene_carnet = pedir_si_no("¿El cliente dispone de carnet de estudiante?")
 
         # CÁLCULO DEL TOTAL DE LA COMPRA
-        # Total bruto = precio por entrada x número de entradas.
-        # round(..., 2) redondea a céntimos para evitar errores de decimales.
         total_bruto = round(precio_entrada * numero_entradas, 2)
 
         # AMPLIACIÓN: se hace un descuento del 20 % por carnet de estudiante.
-        # Condición compuesta con "and": solo se aplica si tiene carnet Y la
-        # entrada no es gratuita (no tiene sentido descontar sobre 0 €).
+        # Condición compuesta con "and": solo se aplica si tiene carnet Y la entrada no es gratuita
         descuento_carnet = 0.0
         if tiene_carnet and precio_entrada > 0:
             descuento_carnet = round(total_bruto * PORCENTAJE_ESTUDIANTE, 2)
         total_compra = round(total_bruto - descuento_carnet, 2)
 
         # AMPLIACIÓN: descuento de grupo del 10 % a partir de 5 entradas.
-        # Se calcula sobre el total que queda después del descuento de carnet.
         descuento_grupo = 0.0
         if numero_entradas >= ENTRADAS_PARA_DESCUENTO:
             descuento_grupo = round(total_compra * PORCENTAJE_DESCUENTO, 2)
             total_compra = round(total_compra - descuento_grupo, 2)
 
         # MOSTRAR TICKET DE VENTA
-        # Los importes se muestran con dos decimales (:.2f).
-        # Las líneas de descuento solo aparecen si realmente hubo descuento.
         print("\n========== TICKET ==========")
         print(f"Cliente: {nombre_cliente}")
         print(f"Tipo: {tipo_entrada}")
@@ -163,8 +145,6 @@ while True:
         print("============================")
 
         # AMPLIACIÓN: permitir cancelar la compra antes de confirmarla.
-        # Si el usuario no confirma, continue vuelve al menú ANTES de llegar a
-        # las líneas que actualizan los acumuladores, así que no se registra nada.
         if not pedir_si_no("¿Confirmar la compra?"):
             print("Compra cancelada. No se ha registrado la venta.")
             continue  # Vuelve al menú sin registrar nada
@@ -172,9 +152,9 @@ while True:
         # ACTUALIZAR CONTADORES Y ACUMULADORES
         # Solo se llega aquí si todos los datos son válidos y la compra se ha
         # confirmado; por eso el resumen nunca incluye ventas erróneas.
-        total_operaciones += 1                                       # contador: +1 por venta
-        total_entradas += numero_entradas                            # acumulador: suma las entradas
-        total_recaudado = round(total_recaudado + total_compra, 2)   # acumulador: suma el dinero
+        total_operaciones += 1                                
+        total_entradas += numero_entradas                            
+        total_recaudado = round(total_recaudado + total_compra, 2)
 
         # AMPLIACIÓN: sumar las entradas al contador de su tipo.
         if tipo_entrada == "Infantil gratuita":

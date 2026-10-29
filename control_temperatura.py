@@ -27,9 +27,11 @@ for i in range (1, num_lecturas + 1):
     while True: #Repetir la lectura si esta mal ingresada
          try:
             temp = float(input("Introduce la temperatura: "))
+            if temp < -273.15:
+                raise ValueError("La temperatura no puede ser menor que el cero absoluto.")
             break
-         except ValueError:
-            print("Error. valores no válidos")
+         except ValueError as e:
+            print(f"Error: {e}")
     
     suma_temperaturas += temp
 
